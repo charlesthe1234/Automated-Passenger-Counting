@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  background: #020617;
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  --card: 222 47% 11%;
+  --card-foreground: 210 40% 98%;
+  --popover: 222 47% 11%;
+  --popover-foreground: 210 40% 98%;
+  --primary: 188 95% 68%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 33% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 73% 51%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217 33% 24%;
+  --input: 217 33% 24%;
+  --ring: 188 95% 68%;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  background: #f8fafc;
+  --background: 210 40% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 188 95% 34%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 40% 94%;
+  --accent-foreground: 222 47% 11%;
+  --destructive: 0 73% 51%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 188 95% 34%;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+:root[data-theme="light"] .bg-slate-950 {
+  background-color: #f8fafc !important;
+}
+
+:root[data-theme="light"] .bg-slate-950\/72 {
+  background-color: rgb(248 250 252 / 0.82) !important;
+}
+
+:root[data-theme="light"] .bg-slate-900,
+:root[data-theme="light"] .bg-slate-900\/70 {
+  background-color: rgb(255 255 255 / 0.96) !important;
+}
+
+:root[data-theme="light"] .bg-slate-900\/40 {
+  background-color: rgb(255 255 255 / 0.72) !important;
+}
+
+:root[data-theme="light"] .bg-slate-800,
+:root[data-theme="light"] .bg-slate-800\/70 {
+  background-color: rgb(241 245 249 / 0.9) !important;
+}
+
+:root[data-theme="light"] .border-slate-800 {
+  border-color: #cbd5e1 !important;
+}
+
+:root[data-theme="light"] .border-slate-700 {
+  border-color: #94a3b8 !important;
+}
+
+:root[data-theme="light"] .border-slate-600 {
+  border-color: #64748b !important;
+}
+
+:root[data-theme="light"] .text-white,
+:root[data-theme="light"] .text-slate-100,
+:root[data-theme="light"] .text-slate-200 {
+  color: #0f172a !important;
+}
+
+:root[data-theme="light"] .text-slate-300 {
+  color: #334155 !important;
+}
+
+:root[data-theme="light"] .text-slate-400 {
+  color: #475569 !important;
+}
+
+:root[data-theme="light"] .text-slate-500 {
+  color: #64748b !important;
+}
+
+:root[data-theme="light"] .text-cyan-100,
+:root[data-theme="light"] .text-cyan-200 {
+  color: #0e7490 !important;
+}
+
+:root[data-theme="light"] .bg-cyan-300\/15,
+:root[data-theme="light"] .bg-cyan-400\/10 {
+  background-color: rgb(207 250 254 / 0.9) !important;
+}
+
+:root[data-theme="light"] .border-cyan-300,
+:root[data-theme="light"] .border-cyan-400\/25 {
+  border-color: #06b6d4 !important;
+}
+
+:root[data-theme="light"] .text-emerald-100,
+:root[data-theme="light"] .text-emerald-200 {
+  color: #047857 !important;
+}
+
+:root[data-theme="light"] .text-amber-100,
+:root[data-theme="light"] .text-amber-200 {
+  color: #92400e !important;
+}
+
+:root[data-theme="light"] .text-red-100 {
+  color: #991b1b !important;
+}
+
+:root[data-theme="light"] .bg-emerald-500\/10,
+:root[data-theme="light"] .bg-emerald-500\/15 {
+  background-color: rgb(236 253 245 / 0.95) !important;
+}
+
+:root[data-theme="light"] .bg-amber-500\/10,
+:root[data-theme="light"] .bg-amber-500\/15 {
+  background-color: rgb(255 251 235 / 0.95) !important;
+}
+
+:root[data-theme="light"] .bg-red-500\/10 {
+  background-color: rgb(254 242 242 / 0.95) !important;
+}
+
+:root[data-theme="light"] .shadow-2xl {
+  box-shadow: 0 18px 48px rgb(15 23 42 / 0.12) !important;
+}

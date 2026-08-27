@@ -1,0 +1,46 @@
+# Project-owned OC-SORT settings, carried over from the BoT-SORT tuning.
+#
+# BoT-SORT associates on box overlap, which breaks down exactly when two people
+# cross: for a moment both boxes overlap both tracks and the IDs can trade.
+# OC-SORT adds two mechanisms aimed at that moment. Observation-Centric
+# Momentum scores each candidate against the direction the track was already
+# travelling, so a person continuing straight through a crossing is not handed
+# to someone moving the other way. Observation-Centric Re-Update repairs the
+# Kalman drift that accumulates while a person is hidden, instead of letting a
+# stale prediction claim whoever reappears first.
+#
+# No appearance model runs here at all. TransReID owns identity, and a second
+# opinion inside the tracker would only duplicate work it already does better
+# with a gallery behind it. The cameras are fixed, so nothing needs global
+# motion compensation either.
+#
+# Keep this file under version control so an Ultralytics package update cannot
+# silently change tracker behaviour. bytetrack_ghost_resistant.yaml is retained
+# so `--tracker-config bytetrack_ghost_resistant.yaml` reverts in one flag.
+
+tracker_type: ocsort
+
+# Carried over unchanged from the BoT-SORT configuration. The stock OC-SORT
+# defaults are far looser (0.25 for both thresholds) and would spawn the
+# short-lived duplicate tracks the application-level shadow suppression was
+# written to absorb.
+track_high_thresh: 0.50
+track_low_thresh: 0.10
+new_track_thresh: 0.70
+track_buffer: 30
+match_thresh: 0.80
+fuse_score: true
+
+# OC-SORT specifics.
+# delta_t is how many frames back the velocity direction is measured over. Too
+# short and the direction is detector noise; too long and it lags a real turn.
+delta_t: 3
+# inertia weights the direction-consistency cost in association. This is the
+# knob for crossings: raise it to make a track harder to steal from someone
+# travelling the other way, at the cost of punishing genuine sharp turns.
+inertia: 0.2
+# BoT-SORT always ran the second, low-confidence association pass, and a
+# partially occluded person is exactly who produces those weak detections.
+# Leaving this off would discard the tracker's best chance of holding someone
+# together through the crossing this change is meant to fix.
+use_byte: true

@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.venv-cv/
+.venv-cv-linux/
+backend/.venv-linux/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# uv writes uv.lock, which IS committed so both environments stay reproducible.
+.uv-cache/
+
+# Node / Vite
+node_modules/
+dist/
+frontend/dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+LogEvidance/
+
+# Local environment files and secrets
+.env
+.env.*
+.env.local
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+
+# Model weights and generated ML assets
+*.pt
+*.pth
+*.pkl
+*.task
+*.onnx
+*.engine
+edge_tracker/homography_matrix*.json
+# Runtime ReID evidence crops written by main_tracker.py --reid-evidence-dir,
+# plus the archived zip snapshots of earlier runs.
+edge_tracker/angle_evidence*/
+edge_tracker/angle_evidence*.zip
+# TEMP_IDENTITY_DEBUG: generated troubleshooting trace; never commit it.
+edge_tracker/identity_debug_events.jsonl
+edge_tracker/runtime_window_layout.json
+
+# Third-party FastReID checkout supplying the TransReID ViT backbone.
+# setup_ubuntu.sh clones it at a pinned commit; it is not vendored here.
+edge_tracker/fast-reid/
+
+# Uploaded/generated runtime files
+backend/uploads/
+uploads/
+outputs/
+output/
+tmp/
+tmp_video_review/
+latest_recording_*.png
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Coverage artifacts
+.coverage
+.coverage.*
+htmlcov/

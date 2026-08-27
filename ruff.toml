@@ -1,0 +1,36 @@
+# Lint configuration for the first-party Python in backend/ and edge_tracker/.
+# Run with: uvx ruff check .
+
+target-version = "py313"
+
+exclude = [
+    "edge_tracker/fast-reid",  # third-party checkout, pinned upstream
+    ".venv-cv-linux",
+    "backend/.venv-linux",
+    "frontend",
+]
+
+[lint]
+# Deliberately focused: correctness rules that catch real defects, not a
+# whole-codebase restyle. E402 is enabled because backend tests and
+# migrations/env.py legitimately import after configuring the environment,
+# and the `# noqa: E402` directives marking that are only valid if it is on.
+select = [
+    "E4",   # import formatting
+    "E7",
+    "E9",
+    "E402", # module-level import not at top of file
+    "F",    # pyflakes: unused imports, unused variables, undefined names
+    "B",    # bugbear: likely bugs
+    "RUF100",
+]
+
+ignore = [
+    # FastAPI's dependency injection requires evaluating File()/Form()/Depends()
+    # in argument defaults; this is the documented idiom, not a mutable default.
+    "B008",
+]
+
+[lint.per-file-ignores]
+# Diagnostic and calibration entry points are run by hand, not imported.
+"edge_tracker/calibrate_elevated_plane.py" = ["E402"]

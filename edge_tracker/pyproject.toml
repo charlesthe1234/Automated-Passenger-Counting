@@ -1,0 +1,183 @@
+[project]
+name = "cag-edge-tracker"
+version = "1.5.0"
+description = "GPU computer-vision worker for CAG: YOLO detection, MediaPipe pose, TransReID appearance re-identification, role classification, and MiVOLO demographics."
+requires-python = ">=3.13"
+
+dependencies = [
+    # Detection, tracking, and pose
+    "ultralytics>=8.4.104",
+    "mediapipe>=0.10.35",
+    "opencv-python>=4.11.0.86",
+    "numpy>=2.4.4",
+    "pillow>=12.2.0",
+    "scipy>=1.18.0",
+    # Appearance ReID (TransReID ViT backbone) and demographics
+    "torch>=2.11.0",
+    "torchvision>=0.26.0",
+    "timm==0.8.13.dev0",
+    "transformers>=4.51.0",
+    "huggingface-hub>=0.36.2",
+    "mivolo",
+    # Required by the vendored fast-reid checkout that supplies the ViT backbone
+    "yacs>=0.1.8",
+    "termcolor>=3.3.0",
+    "tabulate>=0.10.0",
+    "pyyaml>=6.0",
+    # Telemetry to the FastAPI backend
+    "paho-mqtt>=2.1.0",
+]
+
+# The tracker resolves torch against NVIDIA's CUDA 12.8 wheel index. The stock
+# PyPI build is CPU-only, which silently drops the worker to unusable speeds,
+# so this index is declared explicitly rather than left as a manual step.
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+# MiVOLO has no PyPI release; it is pinned to the commit this system was built
+# against. It is what pins timm to the 0.8.13.dev0 pre-release above.
+mivolo = { git = "https://github.com/WildChlamydia/MiVOLO.git", rev = "37475e3f8818b5f22448003feec3e64b01bfb188" }
+
+[tool.uv]
+# edge_tracker/ is run in place (launcher_ui.py, cv_worker.py), not installed.
+package = false
+# timm 0.8.13.dev0 is a pre-release and MiVOLO requires exactly it.
+prerelease = "allow"
+
+# MiVOLO pins ultralytics==8.1.0, but this system has always run 8.4.104 and
+# depends on its tracker behaviour. `pip check` reports the same conflict against
+# the existing .venv-cv-linux, so this override records the environment as it is
+# rather than downgrading a working detector to satisfy a stale upstream pin.
+override-dependencies = [
+    "ultralytics>=8.4.104",
+]
+
+# Generated from the verified-working .venv-cv-linux (uv pip list --format=freeze).
+# The CV stack is a GPU appliance: an unconstrained resolve pulls mediapipe 1.0,
+# transformers 5.x, OpenCV 5.0 and huggingface-hub 1.x, which are major-version
+# jumps this tracker has never run. These pins reproduce the environment that is
+# known to work. Regenerate deliberately after validating an upgrade on hardware.
+constraint-dependencies = [
+    "absl-py==2.5.0",
+    "accelerate==1.8.1",
+    "annotated-doc==0.0.4",
+    "anyio==4.14.2",
+    "certifi==2026.7.22",
+    "cffi==2.1.0",
+    "charset-normalizer==3.4.9",
+    "click==8.4.2",
+    "contourpy==1.3.3",
+    "cuda-bindings==12.9.4",
+    "cuda-pathfinder==1.2.2",
+    "cuda-toolkit==12.8.1",
+    "cycler==0.12.1",
+    "filelock==3.29.0",
+    "flatbuffers==25.12.19",
+    "fonttools==4.63.0",
+    "fsspec==2026.4.0",
+    "h11==0.16.0",
+    "hf-xet==1.5.2",
+    "httpcore==1.0.9",
+    "httpx==0.28.1",
+    "hub-sdk==0.0.25",
+    "huggingface_hub==0.36.2",
+    "idna==3.18",
+    "Jinja2==3.1.6",
+    "kiwisolver==1.5.0",
+    "lap==0.5.13",
+    "lapx==0.9.4",
+    "markdown-it-py==4.2.0",
+    "MarkupSafe==3.0.3",
+    "matplotlib==3.11.1",
+    "mdurl==0.1.2",
+    "mediapipe==0.10.35",
+    "mpmath==1.3.0",
+    "networkx==3.6.1",
+    "numpy==2.4.4",
+    "nvidia-cublas-cu12==12.8.4.1",
+    "nvidia-cublas==13.1.1.3",
+    "nvidia-cuda-cupti-cu12==12.8.90",
+    "nvidia-cuda-cupti==13.0.85",
+    "nvidia-cuda-nvrtc-cu12==12.8.93",
+    "nvidia-cuda-nvrtc==13.0.88",
+    "nvidia-cuda-runtime-cu12==12.8.90",
+    "nvidia-cuda-runtime==13.0.96",
+    "nvidia-cudnn-cu12==9.19.0.56",
+    "nvidia-cudnn-cu13==9.20.0.48",
+    "nvidia-cufft-cu12==11.3.3.83",
+    "nvidia-cufft==12.0.0.61",
+    "nvidia-cufile-cu12==1.13.1.3",
+    "nvidia-cufile==1.15.1.6",
+    "nvidia-curand-cu12==10.3.9.90",
+    "nvidia-curand==10.4.0.35",
+    "nvidia-cusolver-cu12==11.7.3.90",
+    "nvidia-cusolver==12.0.4.66",
+    "nvidia-cusparse-cu12==12.5.8.93",
+    "nvidia-cusparse==12.6.3.3",
+    "nvidia-cusparselt-cu12==0.7.1",
+    "nvidia-cusparselt-cu13==0.8.1",
+    "nvidia-ml-py==13.610.43",
+    "nvidia-nccl-cu12==2.28.9",
+    "nvidia-nccl-cu13==2.29.7",
+    "nvidia-nvjitlink-cu12==12.8.93",
+    "nvidia-nvjitlink==13.3.33",
+    "nvidia-nvshmem-cu12==3.4.5",
+    "nvidia-nvshmem-cu13==3.4.5",
+    "nvidia-nvtx-cu12==12.8.90",
+    "nvidia-nvtx==13.0.85",
+    "opencv-contrib-python==4.11.0.86",
+    "opencv-python==4.11.0.86",
+    "packaging==26.2",
+    "paho-mqtt==2.1.0",
+    "pandas==3.0.5",
+    "pillow==12.2.0",
+    "pip==26.1.2",
+    "polars-runtime-32==1.43.0",
+    "polars==1.43.0",
+    "psutil==7.2.2",
+    "py-cpuinfo==9.0.0",
+    "pycparser==3.0",
+    "Pygments==2.20.0",
+    "pyparsing==3.3.2",
+    "python-dateutil==2.9.0.post0",
+    "PyYAML==6.0.3",
+    "regex==2026.7.19",
+    "requests==2.34.2",
+    "rich==15.0.0",
+    "safetensors==0.8.0",
+    "scipy==1.18.0",
+    "seaborn==0.13.2",
+    "setuptools==78.1.0",
+    "shellingham==1.5.4",
+    "six==1.17.0",
+    "sounddevice==0.5.5",
+    "sympy==1.14.0",
+    "tabulate==0.10.0",
+    "termcolor==3.3.0",
+    "thop==0.1.1.post2209072238",
+    "timm==0.8.13.dev0",
+    "tokenizers==0.21.4",
+    "torch==2.11.0+cu128",
+    "torchvision==0.26.0+cu128",
+    "tqdm==4.69.0",
+    "transformers==4.51.0",
+    "triton==3.6.0",
+    "typer==0.27.0",
+    "typing_extensions==4.15.0",
+    "ultralytics-thop==2.0.20",
+    "ultralytics==8.4.104",
+    "urllib3==2.7.0",
+    "yacs==0.1.8",
+    "yt-dlp==2026.7.4",
+]
+
+# MiVOLO's setup.py imports pkg_resources without declaring setuptools as a
+# build requirement. Modern setuptools no longer ships pkg_resources at all,
+# so the build environment is pinned to the last series that provides it.
+[tool.uv.extra-build-dependencies]
+mivolo = ["setuptools<81"]
